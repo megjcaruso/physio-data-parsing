@@ -8,7 +8,7 @@ ORIGINAL_FILE = 'SampleReport_181_allvars_14jan2023.txt'
 PIDS_FOLDER = 'SampleReport_PIDS/'
 COMPLETED_FILE_FOLDER = 'Downsampled_Files/'
 
-class DataWrangling:
+class RawDataWrangling:
     '''
     Takes 78 GB raw Dataviewer data, divides up into separate file for each pacritipant,
     and finally downsamples them to disired sampling rate/
@@ -22,7 +22,7 @@ class DataWrangling:
 
     @property
     def downsampled_pids_folder(self):
-        return f"{DataWrangling.downsampleHZ}HZ_PIDS/"
+        return f"{RawDataWrangling.downsampleHZ}HZ_PIDS/"
 
     @staticmethod
     def parse_identifier(df):
@@ -111,7 +111,7 @@ class DataWrangling:
         """
         Downsamples the DataFrame based on the specified downsample rate.
         """
-        downsample_rows = 1000/DataWrangling.downsampleHZ
+        downsample_rows = 1000/RawDataWrangling.downsampleHZ
         return df.iloc[::downsample_rows, :]
 
     def downsample_perpid(self):
@@ -158,7 +158,7 @@ class DataWrangling:
             print("No files to concatenate.")
 
 if __name__ == "__main__":
-    dw = DataWrangling()
+    dw = RawDataWrangling()
     dw.create_pid_samplereports(PIDS_FOLDER)
     dw.downsample_perpid()
-    dw.concat_pids(dw.downsampled_pids_folder, os.path.join(COMPLETED_FILE_FOLDER, f"Gaze_{DataWrangling.downsampleHZ}hz.csv"))
+    dw.concat_pids(dw.downsampled_pids_folder, os.path.join(COMPLETED_FILE_FOLDER, f"Gaze_{RawDataWrangling.downsampleHZ}hz.csv"))
